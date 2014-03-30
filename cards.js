@@ -1,25 +1,33 @@
 function QuestionCtrl($scope){
 	$scope.questions = [
-		{text:'Black Card 1', type:'black'},
-		{text:'Black Card 2', type:'black'},
-		{text:'Black Card 3', type:'black'},
-		{text:'Black Card 4', type:'black'},
-		{text:'Black Card 5', type:'black'},
-		{text:'Black Card 6', type:'black'}];
+		{text:'Black Card 1'},
+		{text:'Black Card 2'},
+		{text:'Black Card 3'},
+		{text:'Black Card 4'},
+		{text:'Black Card 5'},
+		{text:'Black Card 6'}];
 
 	shuffle($scope.questions);
+
+	$scope.remove = function(index){
+		$scope.questions.splice(index, 1);
+	}
 }
 
 function ResponseCtrl($scope){
 	$scope.responses = [
-		{text:'White Card 1', type:'white'},
-		{text:'White Card 2', type:'white'},
-		{text:'White Card 3', type:'white'},
-		{text:'White Card 4', type:'white'},
-		{text:'White Card 5', type:'white'},
-		{text:'White Card 6', type:'white'}];
+		{text:'White Card 1'},
+		{text:'White Card 2'},
+		{text:'White Card 3'},
+		{text:'White Card 4'},
+		{text:'White Card 5'},
+		{text:'White Card 6'}];
 	
 	shuffle($scope.responses);
+
+	$scope.remove = function(index){
+		$scope.responses.splice(index, 1);
+	}
 }
 
 function shuffle(array){
