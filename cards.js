@@ -1,33 +1,39 @@
 function QuestionCtrl($scope){
-	$scope.questions = [
-		{text:'Black Card 1'},
-		{text:'Black Card 2'},
-		{text:'Black Card 3'},
-		{text:'Black Card 4'},
-		{text:'Black Card 5'},
-		{text:'Black Card 6'}];
+	$scope.questions = [];
 
 	shuffle($scope.questions);
 
 	$scope.remove = function(index){
 		$scope.questions.splice(index, 1);
+		$scope.add();
 	}
+
+	$scope.add = function(){
+		while($scope.questions.length < 6){
+			$scope.questions.push(questionList.pop());
+		}
+	}
+
+	$scope.add();
 }
 
 function ResponseCtrl($scope){
-	$scope.responses = [
-		{text:'White Card 1'},
-		{text:'White Card 2'},
-		{text:'White Card 3'},
-		{text:'White Card 4'},
-		{text:'White Card 5'},
-		{text:'White Card 6'}];
+	$scope.responses = [];
 	
 	shuffle($scope.responses);
 
 	$scope.remove = function(index){
 		$scope.responses.splice(index, 1);
+		$scope.add();
 	}
+
+	$scope.add = function(){
+		while($scope.responses.length < 6){
+			$scope.responses.push(responseList.pop());
+		}
+	}
+
+	$scope.add();
 }
 
 function shuffle(array){
@@ -42,4 +48,7 @@ function shuffle(array){
 		array[random] = temp;
 	}
 }
+
+shuffle(questionList);
+shuffle(responseList);
 
