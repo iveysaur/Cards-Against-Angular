@@ -1,0 +1,14 @@
+.card{
+	display: inline-block;
+	height: 200px;
+	width: 200px;
+	border: 1px solid black;
+	padding: 3px;
+	margin: 3px;
+	text-align: center;
+}
+.card.black{
+	background-color: black;
+	color: white;
+}
+

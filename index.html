@@ -1,0 +1,18 @@
+<!doctype html>
+<html ng-app>
+	<head>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.4/angular.min.js"></script>
+		<script src="cards.js"></script>
+		<link rel="stylesheet" href="style.css">
+	</head>
+	<body>
+		<div ng-controller="QuestionCtrl">
+			<div ng-repeat="question in questions" class="card {{question.type}}">{{question.text}}</div>
+		</div>
+		<div ng-controller="ResponseCtrl">
+			<div ng-repeat="response in responses" class="card {{response.type}}">{{response.text}}</div>
+		</div>
+	</body>
+</html>
+
+
