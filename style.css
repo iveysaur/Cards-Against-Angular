@@ -8,6 +8,7 @@
 	text-align: center;
 	vertical-align: top;
 	cursor: pointer;
+	word-wrap: break-word;
 }
 .card.black{
 	background-color: black;
