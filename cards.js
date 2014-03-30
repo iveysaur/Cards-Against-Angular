@@ -52,3 +52,9 @@ function shuffle(array){
 shuffle(questionList);
 shuffle(responseList);
 
+var socket = io.connect('http://localhost');
+socket.on('news', function(data){
+	console.log(data);
+	socket.emit('my other news', {my: 'data'});
+});
+
