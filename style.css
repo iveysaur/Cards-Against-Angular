@@ -6,6 +6,8 @@
 	padding: 3px;
 	margin: 3px;
 	text-align: center;
+	vertical-align: top;
+	cursor: pointer;
 }
 .card.black{
 	background-color: black;
