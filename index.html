@@ -3,14 +3,12 @@
 	<head>
 		<link rel="stylesheet" href="style.css">
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.4/angular.min.js"></script>
-		<script src="black.json"></script>
-		<script src="white.json"></script>
 		<script src="/socket.io/socket.io.js"></script>
 		<script src="cards.js"></script>
 	</head>
 	<body>
 		<div ng-controller="QuestionCtrl">
-			<div ng-repeat="question in questions" ng-click="remove($index)" class="card black">
+			<div class="card black">
 				{{question.text}}
 			</div>
 		</div>
