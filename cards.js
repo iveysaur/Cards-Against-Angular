@@ -1,60 +1,37 @@
+var questionScope, responseScope;
+
 function QuestionCtrl($scope){
-	$scope.questions = [];
+	$scope.question = {};
 
-	shuffle($scope.questions);
-
-	$scope.remove = function(index){
-		$scope.questions.splice(index, 1);
-		$scope.add();
-	}
-
-	$scope.add = function(){
-		while($scope.questions.length < 6){
-			$scope.questions.push(questionList.pop());
-		}
-	}
-
-	$scope.add();
+	questionScope = $scope;
 }
 
 function ResponseCtrl($scope){
 	$scope.responses = [];
 	
-	shuffle($scope.responses);
-
 	$scope.remove = function(index){
-		$scope.responses.splice(index, 1);
-		$scope.add();
-	}
-
-	$scope.add = function(){
-		while($scope.responses.length < 6){
-			$scope.responses.push(responseList.pop());
+		if($scope.responses.length == 7){
+			var played = $scope.responses[index];
+			$scope.responses.splice(index, 1);
+			socket.emit('played', played);
 		}
 	}
 
-	$scope.add();
+	responseScope = $scope;
+
 }
 
-function shuffle(array){
-	var temp, random, cur = array.length;
-
-	while(0 !== cur){
-		random = Math.floor(Math.random() * cur);
-		cur--;
-
-		temp = array[cur];
-		array[cur] = array[random];
-		array[random] = temp;
-	}
-}
-
-shuffle(questionList);
-shuffle(responseList);
-
-var socket = io.connect('http://localhost');
-socket.on('news', function(data){
+var socket = io.connect('http://' + window.location.host);
+socket.on('question', function(data){
 	console.log(data);
 	socket.emit('my other news', {my: 'data'});
+	questionScope.$apply(function(){
+		questionScope.question = data;
+	});
+});
+socket.on('responses', function(data){
+	responseScope.$apply(function(){
+		responseScope.responses = data;
+	});
 });
 
