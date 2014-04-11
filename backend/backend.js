@@ -2,6 +2,7 @@ var app = require('http').createServer(handler), io = require('socket.io').liste
 var url = require('url');
 var questionList = require('./black'), responseList = require('./white');
 var curquestion, responses = [];
+var i;
 
 app.listen(5700);
 
@@ -17,14 +18,6 @@ function handler (req, res) {
     res.end(data);
   });
 }
-
-io.sockets.on('connection', function(socket){
-	socket.emit('question', curquestion);
-	socket.emit('responses', responses);
-	socket.on('played', function(data){
-		console.log(data);
-	});
-});
 
 function shuffle(array){
 	var temp, random, cur = array.length;
@@ -43,8 +36,26 @@ shuffle(questionList);
 shuffle(responseList);
 
 curquestion = questionList.pop();
+responses.push([]);
+responses.push([]);
+responses.push([]);
+responses.push([]);
 
-for(var i = 0; i < 7; i++){
-	responses.push(responseList.pop());
+for(var j = 0; j < 4; j++){
+	for(i = 0; i < 7; i++){
+		responses[j].push(responseList.pop());
+	}
 }
+
+io.sockets.on('connection', function(socket){
+	socket.emit('question', curquestion);
+	socket.emit('player1', responses[0]);
+	socket.emit('player2', responses[1]);
+	socket.emit('player3', responses[2]);
+	socket.emit('player4', responses[3]);
+	socket.on('played', function(data){
+		console.log(data);
+	});
+});
+
 
