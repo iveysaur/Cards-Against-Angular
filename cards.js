@@ -8,22 +8,16 @@ function QuestionCtrl($scope){
 
 function ResponseCtrl($scope){
 	$scope.responses = [];
-	$scope.judge = 2;
+	$scope.judge;
+	$scope.already = 0;
 	
 	$scope.remove = function(index){
-		if($scope.responses.length == 7 && $scope.judge != 1){
+		if($scope.responses.length == 7 && $scope.judge != 1 && $scope.already != 1){
 			var played = $scope.responses[index];
 			$scope.responses.splice(index, 1);
 			socket.emit('played', played);
+			$scope.already = 1;
 		}
-	}
-
-
-	if($scope.judge == 1){
-		console.log("judge is 1!!!");
-	}
-	else{
-		console.log("judge in scope: " + $scope.judge);
 	}
 
 	responseScope = $scope;
@@ -59,8 +53,6 @@ socket.on('playedlist', function(data){
 socket.on('judge', function(data){
 	responseScope.$apply(function(){
 		responseScope.judge = data;
-		console.log("judge: " + data);
-		console.log("responseScope.judge: " + responseScope.judge);
 	});
 });
 
