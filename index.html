@@ -13,6 +13,7 @@
 			</div>
 		</div>
 		<div ng-controller="ResponseCtrl">
+			<h1 ng-show="judge">You are the judge this round and cannot vote!</h1>
 			<div ng-repeat="response in responses" ng-click="remove($index)" class="card">
 				{{response.text}}
 			</div><br>
