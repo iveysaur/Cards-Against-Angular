@@ -1,4 +1,4 @@
-var questionScope, responseScope;
+var questionScope, responseScope, playedScope;
 
 function QuestionCtrl($scope){
 	$scope.question = {};
@@ -9,16 +9,21 @@ function QuestionCtrl($scope){
 function ResponseCtrl($scope){
 	$scope.responses = [];
 	
-	$scope.remove = function(index, row){
-		if($scope.responses[row].length == 7){
-			var played = $scope.responses[row][index];
-			$scope.responses[row].splice(index, 1);
+	$scope.remove = function(index){
+		if($scope.responses.length == 7){
+			var played = $scope.responses[index];
+			$scope.responses.splice(index, 1);
 			socket.emit('played', played);
 		}
 	}
 
 	responseScope = $scope;
+}
 
+function PlayedCtrl($scope){
+	$scope.played = [];
+
+	playedScope = $scope;
 }
 
 var socket = io.connect('http://' + window.location.host);
@@ -29,24 +34,19 @@ socket.on('question', function(data){
 		questionScope.question = data;
 	});
 });
-socket.on('player1', function(data){
+socket.on('player', function(data){
+	responseScope.$apply(function(){
+		responseScope.responses = data;
+	});
+});
+socket.on('new', function(data){
 	responseScope.$apply(function(){
 		responseScope.responses.push(data);
 	});
 });
-socket.on('player2', function(data){
-	responseScope.$apply(function(){
-		responseScope.responses.push(data);
-	});
-});
-socket.on('player3', function(data){
-	responseScope.$apply(function(){
-		responseScope.responses.push(data);
-	});
-});
-socket.on('player4', function(data){
-	responseScope.$apply(function(){
-		responseScope.responses.push(data);
+socket.on('playedlist', function(data){
+	playedScope.$apply(function(){
+		playedScope.played = data;
 	});
 });
 

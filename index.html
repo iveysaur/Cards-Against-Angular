@@ -13,11 +13,15 @@
 			</div>
 		</div>
 		<div ng-controller="ResponseCtrl">
-			<div ng-repeat="row in responses">
-				<div ng-repeat="cell in row" ng-click="remove($index, $parent.$index)" class="card">
-					{{cell.text}}
-				</div><br>
-			</div>
+			<div ng-repeat="response in responses" ng-click="remove($index)" class="card">
+				{{response.text}}
+			</div><br>
+		</div>
+		<div ng-controller="PlayedCtrl">
+			<h1>Played</h1>
+			<div ng-repeat="play in played" class="card">
+				{{play.text}}
+			</div><br>
 		</div>
 	</body>
 </html>
