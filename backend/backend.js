@@ -1,8 +1,8 @@
 var app = require('http').createServer(handler), io = require('socket.io').listen(app), fs = require('fs');
 var url = require('url');
 var questionList = require('./black'), responseList = require('./white');
-var curquestion, responses = [], players = [];
-var i, count = 0, judge = 0, judger, played = [];
+var curquestion, responses = [], players = [], played = [];
+var i, count = 0, round = 0, judge, current;
 
 app.listen(5700);
 
@@ -40,17 +40,18 @@ curquestion = questionList.pop();
 io.sockets.on('connection', function(socket){
 	socket.emit('question', curquestion);
 	count++;
-	judge++;
+	round++;
 	players.push(socket.id);
 	responses.push([]);
 	for(i = 0; i < 7; i++){
 		responses[responses.length - 1].push(responseList.pop());
 	}
 	socket.emit('player', responses[responses.length - 1]);
-	judger = players[judge%players.length]; 
-	io.sockets.emit('judge', 0);
-	io.sockets.socket(judger).emit('judge', 1);
+	judge = players[round%players.length]; 
+	io.sockets.emit('round', 0);
+	io.sockets.socket(judge).emit('round', 1);
 	socket.on('played', function(data){
+		data.current = socket.id;
 		played.push(data);
 		socket.emit('new', responseList.pop());
 		if(played.length == count - 1){
