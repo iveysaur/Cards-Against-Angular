@@ -26,6 +26,12 @@ function ResponseCtrl($scope){
 function PlayedCtrl($scope){
 	$scope.played = [];
 
+	$scope.choose = function(index){
+		if(responseScope.judge == 1){
+			console.log("picked: " + $scope.played[index].text);
+		}
+	}
+
 	playedScope = $scope;
 }
 
