@@ -1,4 +1,4 @@
-var questionScope, responseScope, playedScope;
+var questionScope, responseScope, playedScope, idScope;
 
 function QuestionCtrl($scope){
 	$scope.question = {};
@@ -10,7 +10,7 @@ function ResponseCtrl($scope){
 	$scope.responses = [];
 	$scope.judge;
 	$scope.already = 0;
-	
+
 	$scope.remove = function(index){
 		if($scope.responses.length == 7 && $scope.judge != 1 && $scope.already != 1){
 			var played = $scope.responses[index];
@@ -28,11 +28,18 @@ function PlayedCtrl($scope){
 
 	$scope.choose = function(index){
 		if(responseScope.judge == 1){
-			console.log("picked: " + $scope.played[index].text);
+			socket.emit('winner', $scope.played[index]);
+			$scope.played.length = 0;
 		}
 	}
 
 	playedScope = $scope;
+}
+
+function IDCtrl($scope){
+	$scope.id;
+
+	idScope = $scope;
 }
 
 var socket = io.connect('http://' + window.location.host);
@@ -44,6 +51,11 @@ socket.on('question', function(data){
 socket.on('player', function(data){
 	responseScope.$apply(function(){
 		responseScope.responses = data;
+	});
+});
+socket.on('id', function(data){
+	idScope.$apply(function(){
+		idScope.id = data;
 	});
 });
 socket.on('new', function(data){
