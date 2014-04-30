@@ -55,6 +55,7 @@ io.sockets.on('connection', function(socket){
 	io.sockets.socket(judge).emit('judge', 1);
 	socket.on('played', function(data){
 		data.current = socket.id;
+		console.log("++played: " + data.player);
 		played.push(data);
 		socket.emit('new', responseList.pop());
 		if(played.length == count - 1){

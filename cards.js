@@ -13,7 +13,7 @@ function ResponseCtrl($scope){
 
 	$scope.remove = function(index){
 		if($scope.responses.length == 7 && $scope.judge != 1 && $scope.already != 1){
-			var played = $scope.responses[index];
+			var played = {"card": $scope.responses[index], "player": idScope.id};
 			$scope.responses.splice(index, 1);
 			socket.emit('played', played);
 			$scope.already = 1;
