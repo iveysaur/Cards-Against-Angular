@@ -16,3 +16,17 @@
 	cursor: auto;
 }
 
+.lost{
+	-webkit-animation: drop 1s;
+	-webkit-animation-fill-mode:forwards;
+}
+
+@-webkit-keyframes drop{
+	0%{
+	}
+	100%{
+		opacity: 0;
+		visibility: hidden;
+	}
+}
+

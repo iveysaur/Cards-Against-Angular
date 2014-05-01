@@ -29,7 +29,10 @@ function PlayedCtrl($scope){
 	$scope.choose = function(index){
 		if(responseScope.judge == 1){
 			socket.emit('winner', $scope.played[index]);
-			$scope.played.length = 0;
+			for(i = 0; i < $scope.played.length; i++){
+				if(i != index)
+					$scope.played[i].lost = true;
+			}
 		}
 	}
 

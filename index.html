@@ -23,7 +23,7 @@
 		</div>
 		<div ng-controller="PlayedCtrl">
 			<h1>Played</h1>
-			<div ng-repeat="play in played" ng-click="choose($index)" class="card">
+			<div ng-repeat="play in played" ng-click="choose($index)" class="card" ng-class='{ lost: play.lost }'>
 				{{play.card.text}}
 			</div><br>
 		</div>
