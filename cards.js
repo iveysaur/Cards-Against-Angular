@@ -28,11 +28,8 @@ function PlayedCtrl($scope){
 
 	$scope.choose = function(index){
 		if(responseScope.judge == 1){
+			$scope.played[index].index = index;
 			socket.emit('winner', $scope.played[index]);
-			for(i = 0; i < $scope.played.length; i++){
-				if(i != index)
-					$scope.played[i].lost = true;
-			}
 		}
 	}
 
@@ -74,6 +71,14 @@ socket.on('playedlist', function(data){
 socket.on('judge', function(data){
 	responseScope.$apply(function(){
 		responseScope.judge = data;
+	});
+});
+socket.on('losers', function(data){
+	playedScope.$apply(function(){
+		for(i = 0; i < playedScope.played.length; i++){
+			if(i != data.index)
+				playedScope.played[i].lost = true;
+		}
 	});
 });
 

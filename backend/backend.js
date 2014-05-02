@@ -63,7 +63,7 @@ io.sockets.on('connection', function(socket){
 		}
 	});
 	socket.on('winner', function(data){
-		console.log("++winner: " + data.current);
+		io.sockets.emit('losers', data);
 	});
 	socket.on('disconnect', function(data){
 		count--;
