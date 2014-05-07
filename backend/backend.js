@@ -72,6 +72,10 @@ io.sockets.on('connection', function(socket){
 			io.sockets.emit('question', curquestion);
 			next = 0;
 			played.length = 0;
+			io.sockets.socket(judge).emit('judge', 0);
+			round++;
+			judge = players[round%players.length]; 
+			io.sockets.socket(judge).emit('judge', 1);
 		}
 	});
 	socket.on('disconnect', function(data){
