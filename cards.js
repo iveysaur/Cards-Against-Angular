@@ -40,6 +40,13 @@ function IDCtrl($scope){
 	$scope.id;
 	$scope.winner;
 
+	$scope.nextRound = function(){
+		if($scope.winner){
+			socket.emit('next');
+			$scope.winner = "";
+		}
+	}
+
 	idScope = $scope;
 }
 
@@ -47,6 +54,9 @@ var socket = io.connect('http://' + window.location.host);
 socket.on('question', function(data){
 	questionScope.$apply(function(){
 		questionScope.question = data;
+	});
+	playedScope.$apply(function(){
+		playedScope.played.length = 0;
 	});
 });
 socket.on('player', function(data){

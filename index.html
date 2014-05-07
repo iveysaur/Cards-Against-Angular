@@ -7,9 +7,10 @@
 		<script src="cards.js"></script>
 	</head>
 	<body>
-		<div ng-controller="IDCtrl">
+		<div ng-controller="IDCtrl" id='idCtrl'>
 			<h1>ID: {{id}}</h1>
 			<h1 ng-show="winner">Winner: {{winner}}</h1>
+			<a href ng-click='nextRound()' ng-show="winner">Next Round</a>
 		</div>
 		<div ng-controller="QuestionCtrl">
 			<div class="card black">

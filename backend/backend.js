@@ -2,7 +2,7 @@ var app = require('http').createServer(handler), io = require('socket.io').liste
 var url = require('url');
 var questionList = require('./black'), responseList = require('./white');
 var curquestion, responses = [], players = [], played = [];
-var i, count = 0, round = 0, judge, current;
+var i, count = 0, round = 0, judge, current, next = 0;
 
 app.listen(5700);
 
@@ -64,6 +64,14 @@ io.sockets.on('connection', function(socket){
 	});
 	socket.on('winner', function(data){
 		io.sockets.emit('losers', data);
+	});
+	socket.on('next', function(){
+		next++;
+		if(next == count){
+			curquestion = questionList.pop();
+			io.sockets.emit('question', curquestion);
+			next = 0;
+		}
 	});
 	socket.on('disconnect', function(data){
 		count--;
