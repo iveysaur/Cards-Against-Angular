@@ -25,7 +25,6 @@ function ResponseCtrl($scope){
 
 function PlayedCtrl($scope){
 	$scope.played = [];
-	$scope.winner;
 
 	$scope.choose = function(index){
 		if(responseScope.judge == 1){
@@ -39,6 +38,7 @@ function PlayedCtrl($scope){
 
 function IDCtrl($scope){
 	$scope.id;
+	$scope.winner;
 
 	idScope = $scope;
 }
@@ -76,11 +76,13 @@ socket.on('judge', function(data){
 });
 socket.on('losers', function(data){
 	playedScope.$apply(function(){
-		playedScope.winner = data.player;
 		for(i = 0; i < playedScope.played.length; i++){
 			if(i != data.index)
 				playedScope.played[i].lost = true;
 		}
+	});
+	idScope.$apply(function(){
+		idScope.winner = data.player;
 	});
 });
 
