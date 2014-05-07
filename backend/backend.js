@@ -71,6 +71,7 @@ io.sockets.on('connection', function(socket){
 			curquestion = questionList.pop();
 			io.sockets.emit('question', curquestion);
 			next = 0;
+			played.length = 0;
 		}
 	});
 	socket.on('disconnect', function(data){
