@@ -58,6 +58,9 @@ socket.on('question', function(data){
 	playedScope.$apply(function(){
 		playedScope.played.length = 0;
 	});
+	responseScope.$apply(function(){
+		responseScope.already = 0;
+	});
 });
 socket.on('player', function(data){
 	responseScope.$apply(function(){
