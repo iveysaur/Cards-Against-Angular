@@ -59,6 +59,7 @@ io.sockets.on('connection', function(socket){
 		played.push(data);
 		socket.emit('new', responseList.pop());
 		if(played.length == count - 1){
+			shuffle(played);
 			io.sockets.emit('playedlist', played);
 		}
 	});
