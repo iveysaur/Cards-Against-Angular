@@ -51,7 +51,7 @@ io.sockets.on('connection', function(socket){
 	socket.emit('id', socket.id);
 	judge = players[round%players.length]; 
 	console.log("++judge: " + judge);
-	io.sockets.emit('round', 0);
+	io.sockets.emit('judge', 0);
 	io.sockets.socket(judge).emit('judge', 1);
 	socket.on('played', function(data){
 		data.current = socket.id;
