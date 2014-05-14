@@ -39,6 +39,7 @@ function PlayedCtrl($scope){
 function IDCtrl($scope){
 	$scope.id;
 	$scope.winner;
+	$scope.points = 0;
 
 	$scope.nextRound = function(){
 		if($scope.winner){
