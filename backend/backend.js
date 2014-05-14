@@ -65,6 +65,7 @@ io.sockets.on('connection', function(socket){
 	});
 	socket.on('winner', function(data){
 		io.sockets.emit('losers', data);
+		io.sockets.socket(data.player).emit('points', 1);
 	});
 	socket.on('next', function(){
 		next++;

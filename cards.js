@@ -99,4 +99,9 @@ socket.on('losers', function(data){
 		idScope.winner = data.player;
 	});
 });
+socket.on('points', function(data){
+	idScope.$apply(function(){
+		idScope.points += data;
+	});
+});
 
