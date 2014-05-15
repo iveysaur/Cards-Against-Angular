@@ -1,7 +1,7 @@
-var app = require('http').createServer(handler), io = require('socket.io').listen(app), fs = require('fs');
+var app = require('http').createServer(handler), io = require('socket.io').listen(app, { log: false }), fs = require('fs');
 var url = require('url');
 var questionList = require('./black'), responseList = require('./white');
-var curquestion, responses = [], players = [], played = [];
+var curquestion, responses = [], players = {}, ids = [], played = [];
 var i, count = 0, round = 0, judge, current, next = 0;
 
 app.listen(5700);
@@ -41,21 +41,22 @@ io.sockets.on('connection', function(socket){
 	socket.emit('question', curquestion);
 	count++;
 	round++;
-	console.log("++round: " + round);
-	players.push(socket.id);
+	console.log("round: " + round);
+	players[socket.id] = { 'points': 0 };
+	ids.push(socket.id);
 	responses.push([]);
 	for(i = 0; i < 7; i++){
 		responses[responses.length - 1].push(responseList.pop());
 	}
 	socket.emit('player', responses[responses.length - 1]);
 	socket.emit('id', socket.id);
-	judge = players[round%players.length]; 
-	console.log("++judge: " + judge);
+	judge = ids[round%ids.length]; 
+	console.log("judge: " + judge);
 	io.sockets.emit('judge', 0);
 	io.sockets.socket(judge).emit('judge', 1);
 	socket.on('played', function(data){
 		data.current = socket.id;
-		console.log("++played: " + data.player);
+		console.log("played: " + data.player);
 		played.push(data);
 		socket.emit('new', responseList.pop());
 		if(played.length == count - 1){
@@ -65,6 +66,8 @@ io.sockets.on('connection', function(socket){
 	});
 	socket.on('winner', function(data){
 		io.sockets.emit('losers', data);
+		players[data.player].points++;
+		console.log("player " + data.player + " has " + players[data.player].points + " points");
 		io.sockets.socket(data.player).emit('points', 1);
 	});
 	socket.on('next', function(){
@@ -76,14 +79,14 @@ io.sockets.on('connection', function(socket){
 			played.length = 0;
 			io.sockets.socket(judge).emit('judge', 0);
 			round++;
-			judge = players[round%players.length]; 
+			judge = ids[round%ids.length]; 
 			io.sockets.socket(judge).emit('judge', 1);
 		}
 	});
 	socket.on('disconnect', function(data){
 		count--;
 	});
-	console.log("++count: " + count);
-	console.log("++id: " + socket.id);
+	console.log("count: " + count);
+	console.log("id: " + socket.id);
 });
 
