@@ -101,7 +101,7 @@ socket.on('losers', function(data){
 });
 socket.on('points', function(data){
 	idScope.$apply(function(){
-		idScope.points += data;
+		idScope.points = data;
 	});
 });
 

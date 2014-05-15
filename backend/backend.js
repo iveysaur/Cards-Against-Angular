@@ -68,7 +68,7 @@ io.sockets.on('connection', function(socket){
 		io.sockets.emit('losers', data);
 		players[data.player].points++;
 		console.log("player " + data.player + " has " + players[data.player].points + " points");
-		io.sockets.socket(data.player).emit('points', 1);
+		io.sockets.socket(data.player).emit('points', players[data.player].points);
 	});
 	socket.on('next', function(){
 		next++;
