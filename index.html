@@ -8,9 +8,12 @@
 	</head>
 	<body>
 		<div ng-controller="IDCtrl" id='idCtrl'>
-			<h1>ID: {{id}} || Points: {{points}}</h1>
-			<h1 ng-show="winner">Winner: {{winner}}</h1>
-			<a href ng-click='nextRound()' ng-show="winner">Next Round</a>
+			<h1>{{id}}: {{points}}</h1>
+			<div id="hideall" ng-show="winner"></div>
+			<div id="popup" ng-show="winner">
+				<h1 ng-show="winner">Winner: {{winner}}</h1>
+				<a href ng-click='nextRound()' ng-show="winner">Next Round</a>
+			</div>
 		</div>
 		<div ng-controller="QuestionCtrl">
 			<div class="card black">
@@ -19,13 +22,13 @@
 		</div>
 		<div ng-controller="ResponseCtrl">
 			<h1 ng-show="judge">You are the judge this round and cannot vote!</h1>
-			<div ng-repeat="response in responses" ng-click="remove($index)" class="card">
+			<div ng-repeat="response in responses" ng-click="remove($index)" class="card white">
 				{{response.text}}
 			</div><br>
 		</div>
 		<div ng-controller="PlayedCtrl">
 			<h1>Played</h1>
-			<div ng-repeat="play in played" ng-click="choose($index)" class="card" ng-class='{ lost: play.lost }'>
+			<div ng-repeat="play in played" ng-click="choose($index)" class="card white" ng-class='{ lost: play.lost }'>
 				{{play.card.text}}
 			</div><br>
 		</div>
