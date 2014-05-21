@@ -16,7 +16,7 @@
 					<input type="submit" id="submit" value="submit">
 				</form>
 			</div>
-			<h1>{{name}}: {{points}}</h1>
+			<h1><div style="display: inline-block" ng-click="change()">{{name}}</div>: {{points}}</h1>
 			<div id="hideall" ng-show="winner"></div>
 			<div id="popup" ng-show="winner">
 				<h1 ng-show="winner">Winner: {{winner}}</h1>

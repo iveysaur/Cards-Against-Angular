@@ -50,6 +50,10 @@ function IDCtrl($scope){
 		}
 	};
 
+	$scope.change = function(){
+		$scope.newbie = 1;
+	};
+
 	$scope.nextRound = function(){
 		if($scope.winner){
 			socket.emit('next');
