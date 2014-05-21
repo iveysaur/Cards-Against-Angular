@@ -8,7 +8,7 @@
 	</head>
 	<body>
 		<div ng-controller="IDCtrl" id='idCtrl'>
-			<div id="hideall" ng-show="newbie"></div>
+			<div id="hideall" ng-show="newbie" ng-click="nvm()"></div>
 			<div id="popup" ng-show="newbie">
 				<h1>Please Enter a Name</h1>
 				<form ng-submit="submit()">

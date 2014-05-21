@@ -41,17 +41,24 @@ function IDCtrl($scope){
 	$scope.name;
 	$scope.winner;
 	$scope.newbie = 1;
+	$scope.submitted = 0;
 	$scope.points = 0;
 
 	$scope.submit = function(){
 		if($scope.name){
 			$scope.newbie = 0;
+			$scope.submitted = 1;
 			socket.emit('name', {name: $scope.name, id: $scope.id});
 		}
 	};
 
 	$scope.change = function(){
 		$scope.newbie = 1;
+	};
+
+	$scope.nvm = function(){
+		if($scope.name && $scope.submitted == 1)
+			$scope.newbie = 0;
 	};
 
 	$scope.nextRound = function(){
