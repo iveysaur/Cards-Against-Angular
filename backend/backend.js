@@ -87,6 +87,7 @@ io.sockets.on('connection', function(socket){
 			judge = ids[round%ids.length]; 
 			io.sockets.socket(judge).emit('judge', 1);
 		}
+	});
 	socket.on('disconnect', function(data){
 		count--;
 	});
