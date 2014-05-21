@@ -7,7 +7,10 @@ var i, count = 0, round = 1, judge, current, next = 0;
 app.listen(5700);
 
 function handler (req, res) {
-	fs.readFile(__dirname + '/../' + url.parse(req.url).pathname,
+	var path = url.parse(req.url).pathname;
+	if(path == '/')
+		path = 'index.html';
+	fs.readFile(__dirname + '/../' + path,
 	function (err, data) {
 		if (err) {
 			res.writeHead(500);
