@@ -8,7 +8,15 @@
 	</head>
 	<body>
 		<div ng-controller="IDCtrl" id='idCtrl'>
-			<h1>{{id}}: {{points}}</h1>
+			<div id="hideall" ng-show="newbie"></div>
+			<div id="popup" ng-show="newbie">
+				<h1>Please Enter a Name</h1>
+				<form ng-submit="submit()">
+					<input type="text" id="name" ng-model="name">
+					<input type="submit" id="submit" value="submit">
+				</form>
+			</div>
+			<h1>{{name}}: {{points}}</h1>
 			<div id="hideall" ng-show="winner"></div>
 			<div id="popup" ng-show="winner">
 				<h1 ng-show="winner">Winner: {{winner}}</h1>

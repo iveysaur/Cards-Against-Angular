@@ -38,8 +38,17 @@ function PlayedCtrl($scope){
 
 function IDCtrl($scope){
 	$scope.id;
+	$scope.name;
 	$scope.winner;
+	$scope.newbie = 1;
 	$scope.points = 0;
+
+	$scope.submit = function(){
+		if($scope.name){
+			$scope.newbie = 0;
+			socket.emit('name', {name: $scope.name, id: $scope.id});
+		}
+	};
 
 	$scope.nextRound = function(){
 		if($scope.winner){
@@ -91,12 +100,12 @@ socket.on('judge', function(data){
 socket.on('losers', function(data){
 	playedScope.$apply(function(){
 		for(i = 0; i < playedScope.played.length; i++){
-			if(i != data.index)
+			if(i != data.data.index)
 				playedScope.played[i].lost = true;
 		}
 	});
 	idScope.$apply(function(){
-		idScope.winner = data.player;
+		idScope.winner = data.name;
 	});
 });
 socket.on('points', function(data){
