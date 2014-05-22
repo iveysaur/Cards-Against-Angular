@@ -3,8 +3,9 @@ var gameScope;
 function GameCtrl($scope){
 	// Question Card
 	$scope.question = {};
-	// Observer flag
+	// Observer variables
 	$scope.observer = 0;
+	$scope.totalPoints;
 	// Players' Cards
 	$scope.responses = [];
 	$scope.judge;
@@ -123,6 +124,11 @@ socket.on('losers', function(data){
 socket.on('points', function(data){
 	gameScope.$apply(function(){
 		gameScope.points = data;
+	});
+});
+socket.on('currentPoints', function(data){
+	gameScope.$apply(function(){
+		gameScope.totalPoints = data;
 	});
 });
 

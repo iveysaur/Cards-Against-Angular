@@ -2,7 +2,7 @@ var app = require('http').createServer(handler), io = require('socket.io').liste
 var url = require('url');
 var questionList = require('./black'), responseList = require('./white');
 var curquestion, responses = [], players = {}, ids = [], played = [];
-var i, count = 0, round = 1, judge, current, next = 0, first = 0;
+var i, count = 0, round = 1, judge, observer, current, next = 0, first = 0;
 
 app.listen(5700);
 
@@ -60,6 +60,7 @@ io.sockets.on('connection', function(socket){
 	}
 	else{
 		first = 1;
+		observer = socket.id;
 		io.sockets.socket(socket.id).emit('observer');
 	}
 	socket.on('name', function(data){
@@ -80,6 +81,7 @@ io.sockets.on('connection', function(socket){
 		players[data.player].points++;
 		console.log("player " + players[data.player].name + " has " + players[data.player].points + " points");
 		io.sockets.socket(data.player).emit('points', players[data.player].points);
+		io.sockets.socket(observer).emit('currentPoints', players);
 	});
 	socket.on('next', function(){
 		next++;

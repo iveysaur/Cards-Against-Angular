@@ -38,6 +38,13 @@
 		</div>
 
 		<h1 ng-show="winner && observer">Winner: {{winner}}</h1>
+
+		<div ng-show="totalPoints && observer">
+			<h1>Current Points</h1>
+			<div ng-repeat="points in totalPoints">
+				<strong>{{points.name}}</strong>: {{points.points}} 
+			</div>
+		</div>
 	</body>
 </html>
 
