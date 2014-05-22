@@ -28,6 +28,9 @@ a{
 	background-color: #111;
 	color: #fcfcfc;
 	cursor: auto;
+	display: block;
+	margin: auto;
+	margin-bottom: 3px;
 }
 .card.white:hover{
 	background-color: #eee;
