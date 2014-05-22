@@ -26,12 +26,13 @@
 			{{question.text}}
 		</div>
 
-		<h1 ng-show="judge">You are the judge this round and cannot vote!</h1>
+		<h1 ng-show="judge == 1 && played.length == 0">You are the judge this round and cannot play!</h1>
 		<div ng-repeat="response in responses" ng-click="remove($index)" class="card white">
 			{{response.text}}
 		</div><br>
 		
-		<h1 ng-if="played.length > 0">Played</h1>
+		<h1 ng-show="played.length > 0 && judge != 1">Played Cards</h1>
+		<h1 ng-show="played.length > 0 && judge == 1">Pick the Winner!</h1>
 		<div ng-repeat="play in played" ng-click="choose($index)" class="card white" ng-class='{ lost: play.lost }'>
 			{{play.card.text}}
 		</div><br>
