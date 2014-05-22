@@ -96,7 +96,7 @@ io.sockets.on('connection', function(socket){
 			played.length = 0;
 			io.sockets.socket(judge).emit('judge', 0);
 			round++;
-			judge = ids[round%ids.length]; 
+			judge = ids[(round-1)%count]; 
 			io.sockets.socket(judge).emit('judge', 1);
 		}
 	});
