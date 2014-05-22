@@ -44,6 +44,8 @@ io.sockets.on('connection', function(socket){
 	socket.emit('question', curquestion);
 	if(first != 0){
 		count++;
+		console.log("count: " + count);
+		console.log("id: " + socket.id);
 		console.log("round: " + round);
 		players[socket.id] = { 'points': 0 };
 		ids.push(socket.id);
@@ -53,10 +55,11 @@ io.sockets.on('connection', function(socket){
 		}
 		socket.emit('player', responses[responses.length - 1]);
 		socket.emit('id', socket.id);
-		judge = ids[round%ids.length]; 
-		console.log("judge: " + judge);
-		io.sockets.emit('judge', 0);
-		io.sockets.socket(judge).emit('judge', 1);
+		if(!judge){
+			judge = ids[0]; 
+			console.log("judge: " + judge);
+			io.sockets.socket(judge).emit('judge', 1);
+		}
 	}
 	else{
 		first = 1;
@@ -65,6 +68,7 @@ io.sockets.on('connection', function(socket){
 	}
 	socket.on('name', function(data){
 		players[data.id].name = data.name;
+		console.log(data.id + " is now known as " + data.name);
 	});
 	socket.on('played', function(data){
 		data.current = socket.id;
@@ -99,7 +103,5 @@ io.sockets.on('connection', function(socket){
 	socket.on('disconnect', function(data){
 		count--;
 	});
-	console.log("count: " + count);
-	console.log("id: " + socket.id);
 });
 
