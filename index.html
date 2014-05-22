@@ -15,9 +15,9 @@
 				<input type="submit" id="submit" value="submit">
 			</form>
 		</div>
-		<h1><div style="display: inline-block" ng-click="change()">{{name}}</div>: {{points}}</h1>
-		<div id="hideall" ng-show="winner" ng-click="nextRound()"></div>
-		<div id="popup" ng-show="winner">
+		<h1><div style="display: inline-block" ng-click="change()">{{name}}</div><div style="display: inline-block" ng-show="!observer">: {{points}}</div></h1>
+		<div id="hideall" ng-show="winner && !observer" ng-click="nextRound()"></div>
+		<div id="popup" ng-show="winner && !observer">
 			<h1 ng-show="winner">Winner: {{winner}}</h1>
 			<a href ng-click="nextRound()" ng-show="winner">Next Round</a>
 		</div>
@@ -35,7 +35,9 @@
 		<h1 ng-show="played.length > 0 && judge == 1">Pick the Winner!</h1>
 		<div ng-repeat="play in played" ng-click="choose($index)" class="card white" ng-class='{ lost: play.lost }'>
 			{{play.card.text}}
-		</div><br>
+		</div>
+
+		<h1 ng-show="winner && observer">Winner: {{winner}}</h1>
 	</body>
 </html>
 

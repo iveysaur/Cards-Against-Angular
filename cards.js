@@ -3,6 +3,8 @@ var gameScope;
 function GameCtrl($scope){
 	// Question Card
 	$scope.question = {};
+	// Observer flag
+	$scope.observer = 0;
 	// Players' Cards
 	$scope.responses = [];
 	$scope.judge;
@@ -72,6 +74,16 @@ socket.on('question', function(data){
 		gameScope.question = data;
 		gameScope.played.length = 0;
 		gameScope.already = 0;
+		gameScope.winner = "";
+	});
+});
+socket.on('observer', function(data){
+	gameScope.$apply(function(data){
+		gameScope.observer = 1;
+		gameScope.name = 'Observer';
+		gameScope.newbie = 0;
+		gameScope.responses.length = 0;
+		gameScope.judge = 0;
 	});
 });
 socket.on('player', function(data){

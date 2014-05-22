@@ -2,7 +2,7 @@ var app = require('http').createServer(handler), io = require('socket.io').liste
 var url = require('url');
 var questionList = require('./black'), responseList = require('./white');
 var curquestion, responses = [], players = {}, ids = [], played = [];
-var i, count = 0, round = 1, judge, current, next = 0;
+var i, count = 0, round = 1, judge, current, next = 0, first = 0;
 
 app.listen(5700);
 
@@ -42,20 +42,26 @@ curquestion = questionList.pop();
 
 io.sockets.on('connection', function(socket){
 	socket.emit('question', curquestion);
-	count++;
-	console.log("round: " + round);
-	players[socket.id] = { 'points': 0 };
-	ids.push(socket.id);
-	responses.push([]);
-	for(i = 0; i < 7; i++){
-		responses[responses.length - 1].push(responseList.pop());
+	if(first != 0){
+		count++;
+		console.log("round: " + round);
+		players[socket.id] = { 'points': 0 };
+		ids.push(socket.id);
+		responses.push([]);
+		for(i = 0; i < 7; i++){
+			responses[responses.length - 1].push(responseList.pop());
+		}
+		socket.emit('player', responses[responses.length - 1]);
+		socket.emit('id', socket.id);
+		judge = ids[round%ids.length]; 
+		console.log("judge: " + judge);
+		io.sockets.emit('judge', 0);
+		io.sockets.socket(judge).emit('judge', 1);
 	}
-	socket.emit('player', responses[responses.length - 1]);
-	socket.emit('id', socket.id);
-	judge = ids[round%ids.length]; 
-	console.log("judge: " + judge);
-	io.sockets.emit('judge', 0);
-	io.sockets.socket(judge).emit('judge', 1);
+	else{
+		first = 1;
+		io.sockets.socket(socket.id).emit('observer');
+	}
 	socket.on('name', function(data){
 		players[data.id].name = data.name;
 	});
