@@ -1,42 +1,15 @@
-var questionScope, responseScope, playedScope, idScope;
+var gameScope;
 
-function QuestionCtrl($scope){
+function GameCtrl($scope){
+	// Question Card
 	$scope.question = {};
-
-	questionScope = $scope;
-}
-
-function ResponseCtrl($scope){
+	// Players' Cards
 	$scope.responses = [];
 	$scope.judge;
 	$scope.already = 0;
-
-	$scope.remove = function(index){
-		if($scope.responses.length == 7 && $scope.judge != 1 && $scope.already != 1){
-			var played = {"card": $scope.responses[index], "player": idScope.id};
-			$scope.responses.splice(index, 1);
-			socket.emit('played', played);
-			$scope.already = 1;
-		}
-	}
-
-	responseScope = $scope;
-}
-
-function PlayedCtrl($scope){
+	// Played cards
 	$scope.played = [];
-
-	$scope.choose = function(index){
-		if(responseScope.judge == 1){
-			$scope.played[index].index = index;
-			socket.emit('winner', $scope.played[index]);
-		}
-	}
-
-	playedScope = $scope;
-}
-
-function IDCtrl($scope){
+	// User
 	$scope.id;
 	$scope.name;
 	$scope.winner;
@@ -44,6 +17,7 @@ function IDCtrl($scope){
 	$scope.submitted = 0;
 	$scope.points = 0;
 
+	// Submit name to server
 	$scope.submit = function(){
 		if($scope.name){
 			$scope.newbie = 0;
@@ -52,76 +26,91 @@ function IDCtrl($scope){
 		}
 	};
 
-	$scope.change = function(){
-		$scope.newbie = 1;
+	// Remove played card and send it to the server to hold
+	$scope.remove = function(index){
+		if($scope.responses.length == 7 && $scope.judge != 1 && $scope.already != 1){
+			var played = {"card": $scope.responses[index], "player": $scope.id};
+			$scope.responses.splice(index, 1);
+			socket.emit('played', played);
+			$scope.already = 1;
+		}
+	}
+
+	// Send the chosen winning card to server
+	$scope.choose = function(index){
+		if($scope.judge == 1){
+			$scope.played[index].index = index;
+			socket.emit('winner', $scope.played[index]);
+		}
 	};
 
-	$scope.nvm = function(){
-		if($scope.name && $scope.submitted == 1)
-			$scope.newbie = 0;
-	};
-
+	// Tell the server to start the next round and reset the winner
 	$scope.nextRound = function(){
 		if($scope.winner){
 			socket.emit('next');
 			$scope.winner = "";
 		}
-	}
+	};
 
-	idScope = $scope;
+	// Have name box pop up
+	$scope.change = function(){
+		$scope.newbie = 1;
+	};
+
+	// When user decides they don't want to change their name make the box disappear
+	$scope.nvm = function(){
+		if($scope.name && $scope.submitted == 1)
+			$scope.newbie = 0;
+	};
+
+	gameScope = $scope;
 }
 
 var socket = io.connect('http://' + window.location.host);
 socket.on('question', function(data){
-	questionScope.$apply(function(){
-		questionScope.question = data;
-	});
-	playedScope.$apply(function(){
-		playedScope.played.length = 0;
-	});
-	responseScope.$apply(function(){
-		responseScope.already = 0;
+	gameScope.$apply(function(){
+		gameScope.question = data;
+		gameScope.played.length = 0;
+		gameScope.already = 0;
 	});
 });
 socket.on('player', function(data){
-	responseScope.$apply(function(){
-		responseScope.responses = data;
+	gameScope.$apply(function(){
+		gameScope.responses = data;
 	});
 });
 socket.on('id', function(data){
-	idScope.$apply(function(){
-		idScope.id = data;
+	gameScope.$apply(function(){
+		gameScope.id = data;
 	});
 });
 socket.on('new', function(data){
-	responseScope.$apply(function(){
-		responseScope.responses.push(data);
+	gameScope.$apply(function(){
+		gameScope.responses.push(data);
 	});
 });
 socket.on('playedlist', function(data){
-	playedScope.$apply(function(){
-		playedScope.played = data;
+	gameScope.$apply(function(){
+		gameScope.played = data;
 	});
 });
 socket.on('judge', function(data){
-	responseScope.$apply(function(){
-		responseScope.judge = data;
+	gameScope.$apply(function(){
+		gameScope.judge = data;
 	});
 });
 socket.on('losers', function(data){
-	playedScope.$apply(function(){
-		for(i = 0; i < playedScope.played.length; i++){
+	gameScope.$apply(function(){
+		for(i = 0; i < gameScope.played.length; i++){
 			if(i != data.data.index)
-				playedScope.played[i].lost = true;
+				gameScope.played[i].lost = true;
 		}
-	});
-	idScope.$apply(function(){
-		idScope.winner = data.name;
+		gameScope.winner = data.name;
 	});
 });
 socket.on('points', function(data){
-	idScope.$apply(function(){
-		idScope.points = data;
+	gameScope.$apply(function(){
+		gameScope.points = data;
 	});
 });
 

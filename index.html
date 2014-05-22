@@ -6,40 +6,35 @@
 		<script src="/socket.io/socket.io.js"></script>
 		<script src="cards.js"></script>
 	</head>
-	<body>
-		<div ng-controller="IDCtrl" id='idCtrl'>
-			<div id="hideall" ng-show="newbie" ng-click="nvm()"></div>
-			<div id="popup" ng-show="newbie">
-				<h1>Please Enter a Name</h1>
-				<form ng-submit="submit()">
-					<input type="text" id="name" ng-model="name">
-					<input type="submit" id="submit" value="submit">
-				</form>
-			</div>
-			<h1><div style="display: inline-block" ng-click="change()">{{name}}</div>: {{points}}</h1>
-			<div id="hideall" ng-show="winner" ng-click="nextRound()"></div>
-			<div id="popup" ng-show="winner">
-				<h1 ng-show="winner">Winner: {{winner}}</h1>
-				<a href ng-click="nextRound()" ng-show="winner">Next Round</a>
-			</div>
+	<body ng-controller="GameCtrl">
+		<div id="hideall" ng-show="newbie" ng-click="nvm()"></div>
+		<div id="popup" ng-show="newbie">
+			<h1>Please Enter a Name</h1>
+			<form ng-submit="submit()">
+				<input type="text" id="name" ng-model="name">
+				<input type="submit" id="submit" value="submit">
+			</form>
 		</div>
-		<div ng-controller="QuestionCtrl">
-			<div class="card black">
-				{{question.text}}
-			</div>
+		<h1><div style="display: inline-block" ng-click="change()">{{name}}</div>: {{points}}</h1>
+		<div id="hideall" ng-show="winner" ng-click="nextRound()"></div>
+		<div id="popup" ng-show="winner">
+			<h1 ng-show="winner">Winner: {{winner}}</h1>
+			<a href ng-click="nextRound()" ng-show="winner">Next Round</a>
 		</div>
-		<div ng-controller="ResponseCtrl">
-			<h1 ng-show="judge">You are the judge this round and cannot vote!</h1>
-			<div ng-repeat="response in responses" ng-click="remove($index)" class="card white">
-				{{response.text}}
-			</div><br>
+
+		<div class="card black">
+			{{question.text}}
 		</div>
-		<div ng-controller="PlayedCtrl">
-			<h1 ng-if="played.length > 0">Played</h1>
-			<div ng-repeat="play in played" ng-click="choose($index)" class="card white" ng-class='{ lost: play.lost }'>
-				{{play.card.text}}
-			</div><br>
-		</div>
+
+		<h1 ng-show="judge">You are the judge this round and cannot vote!</h1>
+		<div ng-repeat="response in responses" ng-click="remove($index)" class="card white">
+			{{response.text}}
+		</div><br>
+		
+		<h1 ng-if="played.length > 0">Played</h1>
+		<div ng-repeat="play in played" ng-click="choose($index)" class="card white" ng-class='{ lost: play.lost }'>
+			{{play.card.text}}
+		</div><br>
 	</body>
 </html>
 
