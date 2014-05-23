@@ -38,7 +38,10 @@ function shuffle(array){
 shuffle(questionList);
 shuffle(responseList);
 
-curquestion = questionList.pop();
+for(curquestion = questionList.pop(); curquestion.pick != 1; curquestion = questionList.pop()){
+	;
+}
+
 
 io.sockets.on('connection', function(socket){
 	socket.emit('question', curquestion);
@@ -90,7 +93,9 @@ io.sockets.on('connection', function(socket){
 	socket.on('next', function(){
 		next++;
 		if(next == count){
-			curquestion = questionList.pop();
+			for(curquestion = questionList.pop(); curquestion.pick != 1; curquestion = questionList.pop()){
+				;
+			}
 			io.sockets.emit('question', curquestion);
 			next = 0;
 			played.length = 0;
